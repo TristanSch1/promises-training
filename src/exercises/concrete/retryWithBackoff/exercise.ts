@@ -4,4 +4,15 @@ type Context = {
 };
 
 export default ({ postData, wait }: Context) =>
-  async (data: string) => {};
+  async (data: string) => {
+    let waitTime = 200;
+
+    while (true) {
+      try {
+        return await postData(data);
+      } catch (error) {
+        await wait(waitTime);
+        waitTime *= 2;
+      }
+    }
+  };

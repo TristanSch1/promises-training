@@ -5,4 +5,8 @@ type Context = {
 };
 
 export default ({ firstStep, secondStep, thirdStep }: Context) =>
-  async (list: Array<string>) => {};
+  async (list: Array<string>) => {
+    return await Promise.all(
+      list.map((data) => firstStep(data).then(secondStep).then(thirdStep))
+    );
+  };

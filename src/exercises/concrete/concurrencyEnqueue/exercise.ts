@@ -3,5 +3,17 @@ type Context = {
 };
 
 export default ({ postData }: Context) => {
-  return async (data: string) => {};
+  let lastTask = Promise.resolve();
+
+  return async (data: string) => {
+    const run = async () => {
+      await postData(data);
+    };
+
+    const task = lastTask.then(run);
+
+    lastTask = task;
+
+    await task;
+  };
 };

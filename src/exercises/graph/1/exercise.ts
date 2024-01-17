@@ -3,15 +3,37 @@ import { skipExercise } from "../../../lib/skipExercise.js";
 
 const mixed =
   ({ createPromise }: ExerciseContext) =>
-  async () => {};
+  async () => {
+    const a = createPromise("A");
+    const b = createPromise("B");
+    const c = createPromise("C");
+    const d = createPromise("D");
+    await a;
+    await b;
+    await c;
+    await d;
+  };
 
 const asyncAwait =
   ({ createPromise }: ExerciseContext) =>
-  async () => {};
+  async () => {
+    await createPromise("A");
+    await createPromise("B");
+    await createPromise("C");
+    await createPromise("D");
+  };
 
 const thenCatch =
   ({ createPromise }: ExerciseContext) =>
-  async () => {};
+  async () => {
+    createPromise("A").then(() => {
+      createPromise("B").then(() => {
+        createPromise("C").then(() => {
+          createPromise("D");
+        });
+      });
+    });
+  };
 
 export default {
   makeMixedExercise: skipExercise(mixed),

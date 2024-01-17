@@ -7,11 +7,41 @@ const mixed =
 
 const asyncAwait =
   ({ createPromise }: ExerciseContext) =>
-  async () => {};
+  async () => {
+    const a = createPromise("A");
+    const b = async () => {
+      await a;
+      await createPromise("B");
+    };
+    const c = async () => {
+      await a;
+      await createPromise("C");
+    };
+    const d = async () => {
+      await a;
+      await createPromise("D");
+    };
+
+    const e = async () => {
+      await Promise.all([b, c]);
+      await createPromise("E");
+    };
+
+    await Promise.all([a, b, c, d, e]);
+  };
 
 const thenCatch =
   ({ createPromise }: ExerciseContext) =>
-  async () => {};
+  async () => {
+    createPromise("A").then(() => {
+      Promise.all([
+        Promise.all([createPromise("B"), createPromise("C")]).then(() =>
+          createPromise("E")
+        ),
+        createPromise("D"),
+      ]);
+    });
+  };
 
 export default {
   makeMixedExercise: skipExercise(mixed),

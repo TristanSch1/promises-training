@@ -3,4 +3,15 @@ type Context = {
 };
 
 export default ({ postData }: Context) =>
-  async (list: Array<string>) => {};
+  async (list: Array<string>) => {
+    const results: string[] = [];
+    for (const data of list) {
+      try {
+        results.push(await postData(data));
+      } catch (error) {
+        // ignore
+      }
+    }
+
+    return results;
+  };
